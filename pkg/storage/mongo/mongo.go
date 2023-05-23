@@ -54,28 +54,6 @@ func (mg *Storage) Posts() ([]storage.Post, error) {
 	return data, cur.Err()
 }
 
-/*
-func (mg *Storage) Posts() ([]storage.Post, error) {
-	collection := mg.Db.Database(databaseName).Collection(collectionName)
-	filter := bson.D{}
-	cur, err := collection.Find(context.Background(), filter)
-	if err != nil {
-		return nil, err
-	}
-	defer cur.Close(context.Background())
-	var data []storage.Post
-	for cur.Next(context.Background()) {
-		var l storage.Post
-		err := cur.Decode(&l)
-		if err != nil {
-			return nil, err
-		}
-		data = append(data, l)
-	}
-	return data, cur.Err()
-}
-*/
-
 func (mg *Storage) AddPost(p storage.Post) error {
 	collection := mg.Db.Database(databaseName).Collection(collectionName)
 	_, err := collection.InsertOne(context.Background(), p)
@@ -85,9 +63,11 @@ func (mg *Storage) AddPost(p storage.Post) error {
 	return nil
 }
 
+// пример запроса curl
 /*
 curl -X PUT http://localhost:8080/posts -H "Content-Type: application/json" -d '{"id":2,"title":"title 22","content":"new text","author_id":2,"name":"","created_at":12,"published_at":26}
 */
+// Ищет такой же title, меняет все остальное
 func (mg *Storage) UpdatePost(p storage.Post) error {
 	collection := mg.Db.Database(databaseName).Collection(collectionName)
 	filter := bson.D{{Key: "title", Value: p.Title}}
@@ -99,6 +79,7 @@ func (mg *Storage) UpdatePost(p storage.Post) error {
 	return nil
 }
 
+// удаляет с совпадающим title
 func (mg *Storage) DeletePost(p storage.Post) error {
 	collection := mg.Db.Database(databaseName).Collection(collectionName)
 	filter := bson.D{{Key: "title", Value: p.Title}}
