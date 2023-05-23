@@ -1,0 +1,3 @@
+{"id":1,"title":"title 1","content":"some text","author_id":4,"author_name":"Vasya","created_at":11,"published_at":22}
+
+{"id":2,"title":"title 2","content":"different text","author_id":2,"author_name":"Petya","created_at":12,"published_at":26}
