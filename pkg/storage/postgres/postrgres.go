@@ -81,31 +81,14 @@ func (s *Store) AddPost(p storage.Post) error {
 
 // curl request example
 /*
-curl -X PUT https://localhost:8080/posts
-     -d '{"id":1,"title":"new title","content:"updated content"}'
+curl -X PUT http://localhost:8080/posts -H "Content-Type: application/json" -d '{"id":15,"title":"updated title","content":"new_content","created_at":7766,"author_id":1}'
 */
-// it works
+// должны совпадать author_id и id, меняет title и content
 func (pg *Store) UpdatePost(p storage.Post) error {
 	query := `UPDATE posts SET title = $3, content = $4 WHERE author_id = $2 AND id=$1;`
 	_, err := pg.db.Exec(context.Background(), query, p.ID, p.AuthorID, p.Title, p.Content)
 	return err
 }
-
-/*
-	func (s *Store) UpdatePost(p storage.Post) error {
-		err := s.db.QueryRow(context.Background(), `
-			UPDATE posts
-			SET title = $1, content = $2
-			WHERE id = $3;
-			`,
-			p.Title,
-			p.Content,
-			p.ID,
-		).Scan()
-
-		return err
-	}
-*/
 
 // request example
 /*
